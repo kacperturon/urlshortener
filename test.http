@@ -1,6 +1,22 @@
-POST http://localhost:3000/shorten HTTP/1.1
+### POST with specified key
+POST http://localhost:3000/shorten
+content-type: application/json
+
+{
+    "url": "http://google.com",
+    "key": "google"
+}
+
+### POST without a key
+POST http://localhost:3000/shorten
 content-type: application/json
 
 {
     "url": "http://google.com"
 }
+
+### GET existing URL
+GET http://localhost:3000/google
+
+### GET non-existing URL
+GET http://localhost:3000/googlenonexistent

@@ -24,13 +24,15 @@ app.post('/shorten', (req, res) => {
 
   if (!url || (key && hashes.has(key))) return res.sendStatus(403);
   if (key) hash = key;
-  setTimeout(() => { halt = true; }, 1000 * 10);
-  do {
-    hash = getRandomHash(hashLength);
-    if (halt) return res.sendStatus(500);
-  } while (hashes.has(hash) || hash === null);
+  else {
+    setTimeout(() => { halt = true; }, 1000 * 10);
+    do {
+      hash = getRandomHash(hashLength);
+      if (halt) return res.sendStatus(500);
+    } while (hashes.has(hash) || hash === null);
+  }
 
-  if (hashes.has(hash)) return res.sendStatus(500);
+  if (hashes.has(hash)) return res.sendStatus(403);
 
   hashes.add(hash);
   urlHashes[url] = urlHashes[url] ? [...urlHashes[url], hash] : [hash];
@@ -50,4 +52,5 @@ app.get('/:hash', (req, res) => {
   return res.redirect(url);
 });
 
+// eslint-disable-next-line no-console
 app.listen(port, () => console.log(`Server: URL shortener started on port ${port}`));
